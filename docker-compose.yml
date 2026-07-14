@@ -1,0 +1,23 @@
+# 本机 / 服务器用 Docker 跑 Redis（不再依赖阿里云 Redis）
+# 启动：docker compose up -d
+# 停止：docker compose down
+
+services:
+  redis:
+    image: redis:7-alpine
+    container_name: resume-ai-redis
+    ports:
+      - "6379:6379"
+    # 密码需与 backend/.env 中 REDIS_PASSWORD 一致
+    command: ["redis-server", "--requirepass", "resumeai123", "--appendonly", "yes"]
+    volumes:
+      - resume_ai_redis_data:/data
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "redis-cli", "-a", "resumeai123", "ping"]
+      interval: 10s
+      timeout: 3s
+      retries: 5
+
+volumes:
+  resume_ai_redis_data:

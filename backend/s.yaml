@@ -1,0 +1,17 @@
+# Backend scaffold for FC / local uvicorn
+# Deploy with Serverless Devs later (s.yaml will be added in FC step)
+
+edition: 3.0.0
+name: resume-ai-analyzer
+access: default
+
+resources:
+  resumeApi:
+    component: fc3
+    props:
+      region: cn-hangzhou
+      handler: app.main.handler
+      runtime: custom.debian10
+      # TODO: 完善 FC3 custom runtime / HTTP 触发器配置
+      environmentVariables:
+        QWEN_MODEL: qwen-plus

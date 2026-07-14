@@ -1,0 +1,267 @@
+:root {
+  --bg: #0f1c17;
+  --panel: #182820;
+  --text: #e8f0ea;
+  --muted: #9bb0a2;
+  --accent: #3d9b6e;
+  --accent-2: #c4a35a;
+  --error: #e07070;
+  --ok: #6dcea0;
+  --line: #2f463a;
+  --font: "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  font-family: var(--font);
+  color: var(--text);
+  background:
+    radial-gradient(ellipse 80% 50% at 20% 0%, #1a3a2c 0%, transparent 55%),
+    radial-gradient(ellipse 60% 40% at 90% 10%, #2a3420 0%, transparent 50%),
+    var(--bg);
+}
+
+.page {
+  max-width: 920px;
+  margin: 0 auto;
+  padding: 48px 20px 80px;
+}
+
+.hero {
+  margin-bottom: 28px;
+}
+
+.brand {
+  margin: 0 0 8px;
+  font-size: 1.2rem;
+  letter-spacing: 0.08em;
+  color: var(--accent-2);
+  font-weight: 700;
+}
+
+.hero h1 {
+  margin: 0 0 12px;
+  font-size: clamp(1.8rem, 4vw, 2.5rem);
+  font-weight: 700;
+}
+
+.sub,
+.hint,
+.detail {
+  color: var(--muted);
+  margin: 0;
+}
+
+.status {
+  margin-top: 12px;
+  font-size: 0.92rem;
+  color: var(--muted);
+}
+
+.status .ok {
+  color: var(--ok);
+}
+
+.status .bad {
+  color: var(--error);
+}
+
+.status .detail {
+  margin-left: 8px;
+}
+
+.layout {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.panel {
+  background: color-mix(in srgb, var(--panel) 90%, transparent);
+  border: 1px solid color-mix(in srgb, var(--accent) 28%, transparent);
+  border-radius: 16px;
+  padding: 22px;
+  backdrop-filter: blur(8px);
+}
+
+.field {
+  margin-bottom: 16px;
+}
+
+.field label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 600;
+}
+
+.field input[type='file'],
+.field textarea {
+  width: 100%;
+  border-radius: 10px;
+  border: 1px solid var(--line);
+  background: #101a15;
+  color: var(--text);
+  padding: 12px;
+  font: inherit;
+}
+
+.field textarea {
+  resize: vertical;
+  line-height: 1.5;
+}
+
+.cta {
+  border: none;
+  border-radius: 10px;
+  padding: 12px 22px;
+  background: linear-gradient(135deg, var(--accent), #2f7a58);
+  color: #fff;
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.cta:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.error {
+  color: var(--error);
+  margin: 0;
+}
+
+.result-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.result-head h2,
+.block h3 {
+  margin: 0 0 10px;
+}
+
+.block {
+  margin-top: 18px;
+  padding-top: 16px;
+  border-top: 1px solid var(--line);
+}
+
+.kv {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 10px 16px;
+}
+
+.kv li {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.kv span {
+  color: var(--muted);
+  font-size: 0.85rem;
+}
+
+.kv.compact {
+  grid-template-columns: 1fr;
+}
+
+.scores {
+  display: flex;
+  gap: 20px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.score-main {
+  width: 110px;
+  height: 110px;
+  border-radius: 50%;
+  border: 2px solid var(--accent);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.score-main em {
+  font-style: normal;
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--accent-2);
+}
+
+.score-main span {
+  color: var(--muted);
+  font-size: 0.8rem;
+}
+
+.tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 10px 0 0;
+}
+
+.tag {
+  display: inline-block;
+  padding: 4px 10px;
+  border-radius: 999px;
+  background: #21362c;
+  border: 1px solid var(--line);
+  font-size: 0.85rem;
+}
+
+.tags.muted .tag {
+  opacity: 0.85;
+}
+
+.list {
+  margin: 12px 0 0;
+  padding-left: 18px;
+  color: var(--muted);
+  line-height: 1.5;
+}
+
+.raw {
+  margin-top: 18px;
+}
+
+.raw summary {
+  cursor: pointer;
+  color: var(--muted);
+}
+
+.raw pre {
+  overflow: auto;
+  background: #0c1410;
+  border-radius: 10px;
+  padding: 14px;
+  font-size: 0.85rem;
+  line-height: 1.45;
+}
+
+@media (max-width: 640px) {
+  .page {
+    padding: 28px 14px 60px;
+  }
+
+  .score-main {
+    width: 96px;
+    height: 96px;
+  }
+}
