@@ -1,0 +1,25 @@
+#!/bin/bash
+# Aliyun FC Web bootstrap — install deps ON LINUX (do not ship Windows vendor/)
+set -e
+cd /code
+export PYTHONUNBUFFERED=1
+
+PORT="${FC_SERVER_PORT:-9000}"
+DEPS="/code/.python_deps"
+export PYTHONPATH="${DEPS}:/code:${PYTHONPATH:-}"
+
+need_install=0
+if ! python3 -c "import uvicorn, fastapi, pydantic_core._pydantic_core" 2>/dev/null; then
+  need_install=1
+fi
+
+if [ "$need_install" = "1" ]; then
+  echo "[bootstrap] installing requirements into ${DEPS} ..."
+  mkdir -p "${DEPS}"
+  python3 -m pip install -r /code/requirements.txt -t "${DEPS}" \
+    -i https://mirrors.aliyun.com/pypi/simple/ \
+    --trusted-host mirrors.aliyun.com
+fi
+
+echo "[bootstrap] starting uvicorn on :${PORT}"
+exec python3 -m uvicorn app.main:app --host 0.0.0.0 --port "${PORT}"

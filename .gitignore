@@ -1,4 +1,5 @@
 .env
+.env.local
 .venv/
 venv/
 __pycache__/
@@ -9,3 +10,9 @@ dist/
 .idea/
 .vscode/
 *.log
+backend/.env
+frontend/.env
+backend/vendor/
+backend/.python_deps/
+!**/.env.example
+!**/.env.production

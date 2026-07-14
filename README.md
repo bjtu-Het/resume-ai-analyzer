@@ -104,9 +104,9 @@ VITE_API_BASE_URL=
 
 ---
 
-## 二、Docker Redis 怎么用？
+## 二、Docker Redis 
 
-本项目**不再使用阿里云 Redis**，改为在服务器（或本机）用 Docker 起一个 Redis。
+本项目使用服务器（或本机）用 Docker 起一个 Redis。
 
 ### 1. 启动 Redis
 
@@ -142,12 +142,6 @@ docker compose down          # 停容器，保留数据卷
 docker compose down -v       # 停容器并删除数据（慎用）
 ```
 
-### 2. 改密码（可选）
-
-1. 编辑根目录 `docker-compose.yml` 里 `--requirepass` 与 healthcheck 密码  
-2. 同步改 `backend/.env` 的 `REDIS_PASSWORD`  
-3. `docker compose up -d --force-recreate`
-
 ### 3. 后端如何连接
 
 | 场景 | `REDIS_HOST` 怎么填 |
@@ -170,12 +164,6 @@ curl http://127.0.0.1:8000/health
 | `memory` | 连不上，已降级本机内存 LRU |
 | `redis_error` | 曾连上但当前 ping 失败 |
 
-本机快速测 Redis 是否通：
-
-```bash
-docker exec -it resume-ai-redis redis-cli -a resumeai123 ping
-# 应返回 PONG
-```
 
 ### 4. 缓存工作原理
 
@@ -185,9 +173,10 @@ docker exec -it resume-ai-redis redis-cli -a resumeai123 ping
         ▼
   生成缓存 Key ──► Redis GET
         │              │
-     命中 ◄────────────┘ 返回结果，meta.cache_hit=true
+        未命中          │
+        │              │
+        │◄────命中──────┘ 返回结果，meta.cache_hit=true
         │
-     未命中
         ▼
   执行 PDF解析 / 千问提取 / 打分
         │
@@ -211,13 +200,6 @@ docker exec -it resume-ai-redis redis-cli -a resumeai123 ping
 }
 ```
 
-### 5. 不想用 Redis 时
-
-不启动 Docker 或配置错误也可以跑：自动降级内存缓存，接口仍可用。
-
-实现代码：`backend/app/services/cache.py`。
-
----
 
 ## 三、本地启动
 
@@ -328,17 +310,3 @@ python tests/smoke_match.py
 - [ ] 向面试官发送：仓库地址、演示地址、姓名与联系方式
 
 ---
-
-## 七、常见问题
-
-**Q：`/health` 里 `redis` 一直是 `memory`？**  
-A：先确认 `docker compose ps` 中 Redis 在跑；`REDIS_PASSWORD` 与 compose 一致；本机用 `127.0.0.1`。再用 `docker exec -it resume-ai-redis redis-cli -a resumeai123 ping` 自测。
-
-**Q：配了 Key 仍像没用上千问？**  
-A：确认 `.env` 在 `backend/` 目录、`QWEN_API_KEY` 不是 `sk-xxxxxxxx` 占位符，改完后重启 uvicorn。
-
-**Q：密钥可以写在代码里吗？**  
-A：不可以。只写在 `backend/.env` 或云平台 / 服务器环境变量中。
-
-**Q：6379 要不要对公网开放？**  
-A：仅本机/内网访问时不必对公网开放。若必须远程连，请改强密码并限制防火墙来源 IP。

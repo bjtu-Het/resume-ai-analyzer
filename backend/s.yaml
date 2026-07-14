@@ -1,5 +1,5 @@
-# Backend scaffold for FC / local uvicorn
-# Deploy with Serverless Devs later (s.yaml will be added in FC step)
+# 阿里云函数计算 FC3 + Web 函数（Custom Runtime）示例配置
+# 使用前请用 Serverless Devs 登录，并按控制台实际情况调整函数名
 
 edition: 3.0.0
 name: resume-ai-analyzer
@@ -10,8 +10,19 @@ resources:
     component: fc3
     props:
       region: cn-hangzhou
-      handler: app.main.handler
+      handler: index.handler
       runtime: custom.debian10
-      # TODO: 完善 FC3 custom runtime / HTTP 触发器配置
+      cpu: 1
+      memorySize: 1024
+      diskSize: 512
+      timeout: 60
+      # Web 函数启动命令：跑 bootstrap（内含 uvicorn）
+      customRuntimeConfig:
+        command:
+          - /code/bootstrap
+        port: 9000
       environmentVariables:
+        PYTHONPATH: /code
         QWEN_MODEL: qwen-plus
+        # 在控制台补充：QWEN_API_KEY、ALLOWED_ORIGINS、REDIS_*
+      code: ./
